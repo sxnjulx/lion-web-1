@@ -6,7 +6,7 @@ export const rootpoint = 'http://localhost:8080/'
 //     getBlogs: "getblogs",
 // }
 // const PostEndponts ={
-//     createBlog: "createblog"
+//     createBlog: "createBlog"
 
 // }
 
@@ -25,9 +25,7 @@ export const apiService = {
         return('hi hi hi')
     },
     fetchData: async (endpoint) => {
-        console.log('fetch function....')
         const response = await fetch(rootpoint+ endpoint);
-        console.log("reponse.....", response)
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

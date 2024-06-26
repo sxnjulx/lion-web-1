@@ -47,12 +47,17 @@ const BlogDetails = () => {
               </div>
             </div>
             <div>
-              <Slideshow imageUrls={post.imageURLs} />
-            </div>
-            <div>
-              {post.longDescription.map((paragraph, index) => (
+              {post.sections.map(({id,subTitle, images, paragraphs}, index) => (
                 <div key={index}>
-                  <p className="text-lg leading-8 text-gray-600">{paragraph}</p>
+                  <h3 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{subTitle}</h3>
+                  <Slideshow imageUrls={images.map((imageData)=>imageData.accessURL)}/>
+                  {paragraphs.map((paragraph,index)=>{
+                    return(
+                      <div key={index}>
+                      <p  className="text-lg leading-8 text-gray-600">{paragraph}</p>
+                    </div>
+                    )
+                  })}
                 </div>
               ))}
             </div>

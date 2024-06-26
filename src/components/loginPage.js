@@ -1,37 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useServices } from '../services/ServiceContext';
-import { type } from '@testing-library/user-event/dist/type';
-import { Navigate, Route, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const {userStateService} = useServices();
-  const {state, dispatch} = userStateService
+  const { userStateService } = useServices();
+  const { state, dispatch } = userStateService;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle login logic here (e.g., send login request to server)
     console.log('Logging in with:', email, password);
-    if (email!= ''&& password !=''){
-      dispatch({type: "AUTHENTICATE_USER", value: true})
-      
-      if(state.IS_USER_AUTHENTICATED){
-          navigate('/home')
-          // return <Navigate to={'/home'} />
-      }
-      
+    if (email !== '' && password !== '') {
+      dispatch({ type: 'AUTHENTICATE_USER', value: true });
+      navigate('/home');
     }
   };
-  const logout = ()=>{
-    if(state.IS_USER_AUTHENTICATED){
-      dispatch({type: "AUTHENTICATE_USER", value: false})
-    }
 
-  }
+  const logout = () => {
+    if (state.IS_USER_AUTHENTICATED) {
+      dispatch({ type: 'AUTHENTICATE_USER', value: false });
+      navigate('/home');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
