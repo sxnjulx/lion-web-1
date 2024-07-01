@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { imageStatusType } from '../inputForm';
+import { imageStatusType } from '../blog/inputForm';
 
-const PhotoUploader = ({ blogId, sectionIndex, sectionId, isUpdate, onSubmit, currentImages }) => {
+const PhotoUploader = ({ sectionIndex, isUpdate, onSubmit, currentImages }) => {
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [imagesIdsFromBack, setImagesIdsFromBack] = useState([]);

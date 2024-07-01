@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useServices } from '../services/ServiceContext';
 import Slideshow from './slideShowComponent'; // Change here
+import { FormatDate } from './blog/inputForm';
+import BackButton from './utills/BackButton';
 
 const BlogDetails = () => {
   let { id } = useParams();
@@ -27,12 +29,13 @@ const BlogDetails = () => {
 
   return (
     <div className="bg-white py-24 sm:py-32">
+      <BackButton/>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{post.title}</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl flex items-center justify-center ">{post.title}</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
-            Published on {post.date ? post.date : "is not specified"}
-          </p>
+            Published on {post.createdDate ? FormatDate(post.createdDate) : "is not specified"}
+          </p>  
         </div>
         <div className="mx-auto mt-10">
           <div className="grid grid-cols-1 gap-y-10">
@@ -40,7 +43,7 @@ const BlogDetails = () => {
               <p className="text-lg leading-8 text-gray-600">{post.description}</p>
             </div>
             <div className="flex items-center gap-x-4">
-              <img src={post.authorImageURL} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+              <img src={post.authorImage?.accessURL} alt="author image" className="h-10 w-10 rounded-full bg-gray-50" />
               <div className="text-sm leading-6">
                 <p className="font-semibold text-gray-900">{post.author}</p>
                 <p className="text-gray-600">{post.authorTitle}</p>

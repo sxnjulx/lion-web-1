@@ -1,21 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import '../index.css'; // Import Tailwind CSS
-import PhotoUploader from './utills/photoUploader';
+import "../../index.css"; // Import Tailwind CSS
+import PhotoUploader from '../utills/photoUploader';
+import { ImageUploader } from '../utills/imageUploader';
 
 export const imageStatusType = {
   NEW: "NEW",
   CHANGED: "CHANGED"
-}
+};
 
+export const FormatDate = (dateArray) => {
+  if (dateArray) {
+    const [year, month, day] = dateArray;
+    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  } else {
+    return '';
+  }
+};
 const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
   const [id, setId] = useState();
   const [title, setTitle] = useState('');
   const [initialParagraph, setInitialParagraph] = useState('');
   const [createdDate, setCreatedDate] = useState('');
   const [author, setAuthor] = useState('');
-  const [authorImageURL, setAuthorImageURL] = useState('');
+  const [authorImage, setAuthorImage] = useState();
   const [authorTitle, setAuthorTitle] = useState('');
   const [sections, setSections] = useState([{ id: undefined, subTitle: '', images: [], paragraphs: [''] }]);
+
+  // const FormatDate = (dateArray) => {
+  //   if (dateArray) {
+  //     const [year, month, day] = dateArray;
+  //     return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  //   } else {
+  //     return '';
+  //   }
+  // };
 
   const handleAddSection = () => {
     setSections([...sections, { subTitle: '', images: [], paragraphs: [''] }]);
@@ -59,9 +77,10 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
       id,
       title,
       initialParagraph,
+      createdDate,
       author,
       authorTitle,
-      authorImageURL,
+      authorImage,
       sections: sections.map(section => ({
         id: section.id,
         subTitle: section.subTitle,
@@ -70,23 +89,18 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
       })),
     };
 
-    // if (isFormSubmitted) {
-      handleSubmit(formData);
-    // }
-
-    // setIsFormSubmitted(false);
+    handleSubmit(formData);
   };
-
-  // const onSubmitForm = () => {
-  //   setIsFormSubmitted(true);
-  //   handleFormSubmit();
-  // };
 
   const handlePhotoUpload = (sectionIndex, files) => {
     const newSections = [...sections];
     newSections[sectionIndex].images = files;
     setSections(newSections);
-  }
+  };
+
+  const handleInputAuthorImage = (imageData) => {
+    setAuthorImage(imageData);
+  };
 
   useEffect(() => {
     if (isUpdate && initialValues) {
@@ -95,9 +109,19 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
       setInitialParagraph(initialValues.initialParagraph || '');
       setAuthor(initialValues.author || '');
       setAuthorTitle(initialValues.authorTitle || '');
-      setAuthorImageURL(initialValues.authorImageURL || '');
+
+      if (initialValues.authorImage) {
+        const tempAuthorImage = {
+          id: initialValues.authorImage.id,
+          file: undefined,
+          url: initialValues.authorImage.accessURL,
+          backChanges: false
+        };
+        setAuthorImage(tempAuthorImage || undefined);
+      }
+
       setSections(initialValues.sections || [{ subTitle: '', images: [], paragraphs: [''] }]);
-      setCreatedDate(initialValues.createdDate || '');
+      setCreatedDate(initialValues.createdDate ? FormatDate(initialValues.createdDate) : '');
     }
   }, [initialValues]);
 
@@ -125,17 +149,21 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
         placeholder="Author Title"
         className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
       />
-      <input
-        type="text"
-        value={authorImageURL}
-        onChange={(e) => setAuthorImageURL(e.target.value)}
-        placeholder="Author Image URL"
-        className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+      <ImageUploader
+        onClickUpload={handleInputAuthorImage}
+        initialImage={authorImage}
       />
       <textarea
         value={initialParagraph}
         onChange={(e) => setInitialParagraph(e.target.value)}
         placeholder="Initial Paragraph"
+        className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+      />
+      <input
+        type="date"
+        value={createdDate}
+        onChange={(e) => setCreatedDate(e.target.value)}
+        placeholder="YYYY-MM-DD"
         className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
       />
       {sections.map((section, sectionIndex) => (

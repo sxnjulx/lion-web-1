@@ -3,7 +3,7 @@ import { BrowserRouter,Routes, Route, Navigate  } from 'react-router-dom';
 import Home from './components/home';
 import Nopage from './components/nopage';
 import LoginPage from './components/loginPage';
-import Blogs from './components/blogs';
+import Blogs from './components/blog/blogs';
 import TeamMembers from './components/team';
 import BlogDetails from './components/blogDetail';
 import { ServiceProvider, useServices } from './services/ServiceContext';
