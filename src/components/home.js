@@ -54,9 +54,9 @@ const Home = () =>{
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Lions Clud of Veyangoda Vangard
             </h1>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            {/* <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               {'user name is ' + state.USER_NAME}
-            </h1> 
+            </h1>  */}
             <p className="mt-6 text-lg leading-8 text-gray-600">
             Welcome to the Lions Club of Veyangoda Vanguard, where community service meets dedication and innovation. As a local chapter of the global Lions Clubs International, our mission is to lead positive change within the global community. Through a spirit of volunteerism and a commitment to service, we strive to be at the forefront of initiatives that uplift and empower our community. Join us as we work together to make a lasting impact, embodying the principles of Lions Clubs in our pursuit of a better, brighter future for all..
             </p>
@@ -103,7 +103,7 @@ const Home = () =>{
             ))}
           </div>
         </div>
-        <div>
+        <div> 
           <Footer/>     
         </div>
       </div>

@@ -147,35 +147,39 @@ const Blogs = () => {
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">user name is {state.USER_NAME}</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From The Blog</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
             Lets serve the world.
           </p>
         </div>
+        { state.IS_USER_AUTHENTICATED &&
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           <Button onClick={(e) => { changeDialogOpen(true) }}>Create New Blog</Button>
           <BlogFormDialog isOpen={isDialogOpen} onClose={handleBlogFromDialogClose} isUpdate={isUpdate} handleSubmit={handleSubmit} blogId={blogId} />
         </div>
+          }
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
-            <RightClickOptionContainer key={post.id} rightClickOptions={[
-              {
-                optionName: "Edit",
-                onClickOption: () => {
-                  setBlogId(post.id);
-                  setIsUpdate(true);
-                  changeDialogOpen(true);
-                }
-              },
-              {
-                optionName: "Delete",
-                onClickOption: () => {
-                  setBlogId(post.id)
-                  setDeleterConfirmopen(true);
-                }
-              },
-            ]} >
+            <RightClickOptionContainer key={post.id} rightClickOptions={state.IS_USER_AUTHENTICATED?
+              [
+                {
+                  optionName: "Edit",
+                  onClickOption: () => {
+                    setBlogId(post.id);
+                    setIsUpdate(true);
+                    changeDialogOpen(true);
+                  }
+                },
+                {
+                  optionName: "Delete",
+                  onClickOption: () => {
+                    setBlogId(post.id)
+                    setDeleterConfirmopen(true);
+                  }
+                },
+              ]
+              : []
+            } >
               <article key={post.id} className="flex max-w-xl flex-col items-start justify-between" onClick={handleBlogPostClick} >
                 <div className="flex items-center gap-x-4 text-xs">
                   <time dateTime={post.datetime} className="text-gray-500">
