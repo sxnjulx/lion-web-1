@@ -20,7 +20,8 @@ const Home = () =>{
   const { userStateService} = useServices()
   const {state, dispatch} = userStateService
     return(
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className='flex flex-col min-h-screen'>
+        <div className="relative isolate px-6 pt-14 lg:px-8">
         {/* <div className="h-screen bg-gray-200 relative ">
           <AnimatedBackground/>
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -103,10 +104,9 @@ const Home = () =>{
             ))}
           </div>
         </div>
-        <div> 
-          <Footer/>     
-        </div>
       </div>
+      <Footer/> 
+      </div>   
     )
     }
     export default Home
