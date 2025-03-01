@@ -36,10 +36,10 @@ export default function PublicLayout() {
 
   return (
     <div className="bg-white">
-      <header className="absolute inset-x-0 top-0 z-50">
+      <header className="absolute inset-x-0 top-0 z-50 pb-10">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/home" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <MyLogo className="h-8 w-auto" />
             </a>
@@ -130,7 +130,10 @@ export default function PublicLayout() {
         </Dialog>
       </header>
 
-      <Outlet />
+      <div className='relative top-20'>
+        <Outlet />
+      </div>
+        
     </div>
   );
 }
