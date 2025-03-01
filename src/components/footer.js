@@ -4,8 +4,8 @@ const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-12 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="px-10">
             <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">Club</h3>
             <ul className="mt-4 space-y-4">
               <li><a href="/aboutus" className="text-base text-gray-300 hover:text-white">About</a></li>
@@ -15,7 +15,7 @@ const Footer = () => {
               <li><a href="/contact" className="text-base text-gray-300 hover:text-white">Contact Us</a></li>
             </ul>
           </div>
-          <div>
+          <div className="px-10">
             <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">Legal</h3>
             <ul className="mt-4 space-y-4">
               <li><a href="" className="text-base text-gray-300 hover:text-white">Claim</a></li>
@@ -23,7 +23,7 @@ const Footer = () => {
               <li><a href="" className="text-base text-gray-300 hover:text-white">Terms</a></li>
             </ul>
           </div>
-          <div className="md:col-span-2">
+          <div className="col-span-2 md:col-span-2">
             <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">Subscribe to our email Service</h3>
             <p className="mt-4 text-base text-gray-300">
               The latest news, articles, and resources, sent to your inbox.

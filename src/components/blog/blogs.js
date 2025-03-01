@@ -15,7 +15,7 @@ const Blogs = () => {
   const { state, dispatch } = userStateService
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); // You can adjust the number of items per page
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [isDialogOpen, changeDialogOpen] = useState(false)
   const [blogId, setBlogId] = useState();
@@ -127,20 +127,23 @@ const Blogs = () => {
 
   const sendGetBlogsRequest = async (page) => {
     try {
-      const response = await axios.get(`http://localhost:8080/getBlogs?page=${page}`);
-      setPosts(response.data.content);
-      setTotalPages(response.data.totalPages);
+      // const response = await axios.get(`http://localhost:5000/blog?page=1`);
+      const response = await axios.get(`http://localhost:5000/blog?page=${page}`);
+      setPosts(response.data.blogs);
+      setTotalPages(response.data.pagination.totalPages);
     } catch (err) {
       alert(err.message);
     }
   };
 
   useEffect(() => {
-    sendGetBlogsRequest(currentPage - 1);
+    sendGetBlogsRequest(currentPage);
   }, [currentPage]);
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    if( page < totalPages+1 && page > 0){
+      setCurrentPage(page);
+    }
   }
 
   return (
@@ -160,7 +163,7 @@ const Blogs = () => {
           }
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
-            <RightClickOptionContainer key={post.id} rightClickOptions={state.IS_USER_AUTHENTICATED?
+            <RightClickOptionContainer key={post._id} rightClickOptions={state.IS_USER_AUTHENTICATED?
               [
                 {
                   optionName: "Edit",
@@ -188,9 +191,9 @@ const Blogs = () => {
                   <a
                     className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
                   >
-                    Blog by {post.author}
+                    Blog by {post.author.name}
                   </a>
-                  <img src={post.authorImage?.accessURL} alt="author image" className="h-10 w-10 rounded-full bg-gray-50" />
+                  <img src={post.author?.image} alt="author image" className="h-10 w-10 rounded-full bg-gray-50" />
                 </div>
                 <div className="group relative">
                   <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
@@ -202,7 +205,7 @@ const Blogs = () => {
                 <div className="relative mt-8 flex items-center gap-x-4">
                   <div className="text-sm leading-6">
                     <p className="font-semibold text-gray-900">
-                      <Link to={`/blogs/${post.id}`}>view more</Link>
+                      <Link to={`/blogs/${post._id}`}>view more</Link>
                     </p>
                   </div>
                 </div>

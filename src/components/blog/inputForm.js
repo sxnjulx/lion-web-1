@@ -8,14 +8,19 @@ export const imageStatusType = {
   CHANGED: "CHANGED"
 };
 
-export const FormatDate = (dateArray) => {
-  if (dateArray) {
-    const [year, month, day] = dateArray;
+export const FormatDate = (dateString) => {
+  if (dateString) {
+    const date = new Date(dateString);  // Convert the string into a Date object
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;  // getMonth() returns month from 0-11, so we add 1
+    const day = date.getDate();
+
     return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   } else {
     return '';
   }
 };
+
 const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
   const [id, setId] = useState();
   const [title, setTitle] = useState('');

@@ -1,4 +1,4 @@
-export const rootpoint = 'http://localhost:8080/'
+export const rootpoint = 'http://localhost:5000/'
 
 
 // const GetEndpoints = {

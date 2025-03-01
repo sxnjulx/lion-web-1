@@ -13,7 +13,7 @@ const BlogDetails = () => {
   useEffect(() => {
     const getPostById = async () => {
       try {
-        const data = await apiService.fetchData('getBlog/' + id); // Call your fetchData method
+        const data = await apiService.fetchData('blog/' + id); // Call your fetchData method
         setPost(data); // Update state with the fetched data
       } catch (err) {
         alert(err.message); // Update state with the error message
@@ -35,7 +35,7 @@ const BlogDetails = () => {
         {/* <div className="mx-auto max-w-2xl lg:mx-0"> */}
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900 text-center ">{post.title}</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600 text-center">
-            Published on {post.createdDate ? FormatDate(post.createdDate) : "is not specified"}
+            Published on {post.time ? FormatDate(post.time) : "is not specified"}
           </p>
         </div>
         <div className="mx-auto mt-10">
@@ -44,10 +44,10 @@ const BlogDetails = () => {
               <p className="text-lg leading-8 text-gray-600">{post.initialParagraph}</p>
             </div>
             <div className="flex items-center gap-x-4">
-              <img src={post.authorImage?.accessURL} alt="author" className="h-10 w-10 rounded-full bg-gray-50" />
+              <img src={post.author?.image} alt="author" className="h-10 w-10 rounded-full bg-gray-50" />
               <div className="text-sm leading-6">
-                <p className="font-semibold text-gray-900">{post.author}</p>
-                <p className="text-gray-600">{post.authorTitle}</p>
+                <p className="font-semibold text-gray-900">{post.author.name}</p>
+                <p className="text-gray-600">{post.author.title}</p>
               </div>
             </div>
             <div>
