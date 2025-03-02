@@ -41,7 +41,7 @@ const Blogs = () => {
 
   const handleConfirmDeleteOption = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8080/deleteBlog/${blogId}`);
+      const response = await axios.delete(`http://localhost:5000/blog/${blogId}`);
       LoggerService.logSuccess("Blog Deleted Successfully")
       let updatedIndex = posts.findIndex((post) => post.id === blogId)
       setPosts(prevBlogs => [
@@ -57,69 +57,28 @@ const Blogs = () => {
 
   const handleSubmit = async (formData) => {
     try {
-      const formData1 = new FormData();
-      if (formData.authorImage != null) {
-        const authorImage = formData.authorImage;
-        if (authorImage.id == null) {
-          formData1.append("files", authorImage.file)
-          formData.authorImage.file = "newFile";
+      
+      const response = await axios({
+        method: isUpdate ? "PUT" : "POST",
+        url : `http://localhost:5000/blog/`,
+        data: formData,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+
+      const data = response.data;
+      if(response.status >= 200 && response.status < 300){
+        if (isUpdate) {
+          const prev = [...posts];
+          const updatedPostId = prev.findIndex(post => post._id === data._id)
+          prev[updatedPostId] = data
+          setPosts(prev)
         } else {
-          if (authorImage.file != null) {
-            formData1.append("files", authorImage.file)
-            formData.authorImage.file = undefined;
-
-          } else {
-            if (authorImage.URL == null) {
-              formData.authorImage.file = undefined
-              if (formData.authorImage.backChanges) {
-                formData.authorImage.file = "fileRemoved"
-              } else {
-                formData.authorImage.file = undefined
-              }
-            } else {
-              formData.authorImage.file = "fileNotUpadated"
-            }
-          }
+          setPosts(prevBlogs => [data, ...prevBlogs]);
         }
-        const temp = {
-          id: formData.authorImage.id,
-          file: formData.authorImage.file,
-          url: formData.authorImage.url
-        }
-        formData.authorImage = temp;
+        handleBlogFromDialogClose();
       }
-      for (const section of formData.sections) {
-        for (const image of section.images) {
-          if (image.file) {
-            const sectionIndex = formData.sections.findIndex(s => s === section);
-            const imageIndex = section.images.findIndex(i => i === image);
-            const file = new File([image.file], `${sectionIndex}/${imageIndex}`, { type: "image/jpeg" });
-
-            formData1.append("files", file);
-            image.file = `${sectionIndex}/${imageIndex}`;
-          }
-        }
-      }
-      formData1.append("data", JSON.stringify(formData));
-
-      const options = {
-        method: "POST",
-        body: formData1
-      };
-      await fetch(isUpdate ? "http://localhost:8080/updateBlog" : "http://localhost:8080/createBlog", options)
-        .then(response => response.json())
-        .then(data => {
-          if (isUpdate) {
-            const prev = [...posts];
-            const updatedPostId = prev.findIndex(post => post.id === data.id)
-            prev[updatedPostId] = data
-            setPosts(prev)
-          } else {
-            setPosts(prevBlogs => [data, ...prevBlogs]);
-          }
-          handleBlogFromDialogClose();
-        })
-        .catch(error => console.error("Error:", error));
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -168,7 +127,7 @@ const Blogs = () => {
                 {
                   optionName: "Edit",
                   onClickOption: () => {
-                    setBlogId(post.id);
+                    setBlogId(post._id);
                     setIsUpdate(true);
                     changeDialogOpen(true);
                   }
@@ -176,7 +135,7 @@ const Blogs = () => {
                 {
                   optionName: "Delete",
                   onClickOption: () => {
-                    setBlogId(post.id)
+                    setBlogId(post._id)
                     setDeleterConfirmopen(true);
                   }
                 },
@@ -191,9 +150,9 @@ const Blogs = () => {
                   <a
                     className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
                   >
-                    Blog by {post.author.name}
+                    Blog by {post.author?.name}
                   </a>
-                  <img src={post.author?.image} alt="author image" className="h-10 w-10 rounded-full bg-gray-50" />
+                  <img src={post.author?.image?.url} alt="author image" className="h-10 w-10 rounded-full bg-gray-50" />
                 </div>
                 <div className="group relative">
                   <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">

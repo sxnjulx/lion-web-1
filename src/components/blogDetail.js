@@ -40,21 +40,21 @@ const BlogDetails = () => {
         </div>
         <div className="mx-auto mt-10">
           <div className="grid grid-cols-1 gap-y-10">
-            <div className="space-y-4">
-              <p className="text-lg leading-8 text-gray-600">{post.initialParagraph}</p>
-            </div>
             <div className="flex items-center gap-x-4">
-              <img src={post.author?.image} alt="author" className="h-10 w-10 rounded-full bg-gray-50" />
+              <img src={post.author?.image?.url} alt="author" className="h-10 w-10 rounded-full bg-gray-50" />
               <div className="text-sm leading-6">
                 <p className="font-semibold text-gray-900">{post.author.name}</p>
                 <p className="text-gray-600">{post.author.title}</p>
               </div>
             </div>
+            <div className="space-y-4">
+              <p className="text-lg leading-8 text-gray-600">{post.initialParagraph}</p>
+            </div>
             <div>
               {post.sections.map(({ id, subTitle, images, paragraphs }, index) => (
                 <div key={index} className='m-5'>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">{subTitle}</h3>
-                  <Slideshow imageUrls={images.map((imageData) => imageData.accessURL)} />
+                  <Slideshow imageUrls={images.map((imageData) => imageData.url)} />
                   {paragraphs.map((paragraph, index) => (
                     <div key={index} className="mt-4">
                       <p className="text-lg leading-8 text-gray-600">

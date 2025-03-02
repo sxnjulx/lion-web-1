@@ -9,7 +9,7 @@ const BlogFormDialog = ({ isOpen, onClose, isUpdate, handleSubmit,blogId}) => {
   useEffect(()=>{
     if(isUpdate) {
       try {
-        axios.get(`http://localhost:8080/getBlog/${blogId}`).then((response)=>{
+        axios.get(`http://localhost:5000/blog/${blogId}`).then((response)=>{
           setInitialValues(response.data)
         }) 
       } catch (error) {

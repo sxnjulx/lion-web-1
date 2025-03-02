@@ -25,7 +25,7 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
   const [id, setId] = useState();
   const [title, setTitle] = useState('');
   const [initialParagraph, setInitialParagraph] = useState('');
-  const [createdDate, setCreatedDate] = useState('');
+  const [time, setTime] = useState('');
   const [author, setAuthor] = useState('');
   const [authorImage, setAuthorImage] = useState();
   const [authorTitle, setAuthorTitle] = useState('');
@@ -82,12 +82,14 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
       id,
       title,
       initialParagraph,
-      createdDate,
-      author,
-      authorTitle,
-      authorImage,
+      time,
+      author:{
+        name: author,
+        image : authorImage,
+        title: authorTitle
+      },
       sections: sections.map(section => ({
-        id: section.id,
+        id: section?._id, // can remove this if this section is get deleted from the db
         subTitle: section.subTitle,
         images: section.images,
         paragraphs: section.paragraphs,
@@ -109,24 +111,23 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
 
   useEffect(() => {
     if (isUpdate && initialValues) {
-      setId(initialValues.id || '');
+      setId(initialValues._id || '');
       setTitle(initialValues.title || '');
       setInitialParagraph(initialValues.initialParagraph || '');
-      setAuthor(initialValues.author || '');
-      setAuthorTitle(initialValues.authorTitle || '');
+      setAuthor(initialValues.author?.name || '');
+      setAuthorTitle(initialValues.author?.title || '');
 
-      if (initialValues.authorImage) {
-        const tempAuthorImage = {
-          id: initialValues.authorImage.id,
-          file: undefined,
-          url: initialValues.authorImage.accessURL,
-          backChanges: false
-        };
-        setAuthorImage(tempAuthorImage || undefined);
+      if (initialValues.author?.image) {
+        // const tempAuthorImage = {
+        //   url: initialValues.author.image,
+        //   backChanges: false
+        // };
+        // setAuthorImage(tempAuthorImage || undefined);
+        setAuthorImage(initialValues.author.image || undefined);
       }
 
       setSections(initialValues.sections || [{ subTitle: '', images: [], paragraphs: [''] }]);
-      setCreatedDate(initialValues.createdDate ? FormatDate(initialValues.createdDate) : '');
+      setTime(initialValues.time ? FormatDate(initialValues.time) : '');
     }
   }, [initialValues]);
 
@@ -157,6 +158,7 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
       <ImageUploader
         onClickUpload={handleInputAuthorImage}
         initialImage={authorImage}
+        blogId={id}
       />
       <textarea
         value={initialParagraph}
@@ -166,8 +168,8 @@ const InputForm = ({ handleSubmit, isUpdate = false, initialValues = {} }) => {
       />
       <input
         type="date"
-        value={createdDate}
-        onChange={(e) => setCreatedDate(e.target.value)}
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
         placeholder="YYYY-MM-DD"
         className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
       />
